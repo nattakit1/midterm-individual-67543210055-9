@@ -85,5 +85,6 @@ npm start
 
 <img width="828" height="619" alt="image" src="https://github.com/user-attachments/assets/c33a08e6-16f5-4d32-9a0f-f3bcbfc7e31e" />
 
+<img width="1525" height="665" alt="image" src="https://github.com/user-attachments/assets/ac7cda98-5c9f-45d9-8c8b-50e877e61485" />
 
 
