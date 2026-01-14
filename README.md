@@ -13,32 +13,9 @@ Layered Architecture (3-tier)
 
 ## 📂 Project Structure
 [อธิบายโครงสร้างโฟลเดอร์]
-midterm-individual-67543210055-9/
-├── server.js
-├── package.json
-├── students.db
-├── public/
-│   └── index.html
-└── src/
-    ├── presentation/
-    │   ├── controllers/
-    │   │   └── studentController.js
-    │   ├── routes/
-    │   │   └── studentRoutes.js
-    │   └── middlewares/
-    │       └── errorHandler.js
-    ├── business/
-    │   ├── services/
-    │   │   └── studentService.js
-    │   └── validators/
-    │       └── studentValidator.js
-    └── data/
-        ├── repositories/
-        │   └── studentRepository.js
-        └── database/
-            └── connection.js
-|- layered-student*
-|- monolithic-student*
+
+<img width="295" height="580" alt="image" src="https://github.com/user-attachments/assets/f02dbcdd-e284-48d9-a6df-2e4c317ab6ee" />
+
 
 ## 🎯 Refactoring Summary
 
