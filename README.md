@@ -77,7 +77,13 @@ npm start
 
 <img width="1403" height="684" alt="image" src="https://github.com/user-attachments/assets/2681dab4-5bef-4c89-8278-25e9babbc556" />
 
+# updateGPA
 
+<img width="853" height="650" alt="image" src="https://github.com/user-attachments/assets/2406c223-ef1f-4309-9fc1-35d1b64b4481" />
+
+# updateStatus
+
+<img width="828" height="619" alt="image" src="https://github.com/user-attachments/assets/c33a08e6-16f5-4d32-9a0f-f3bcbfc7e31e" />
 
 
 
