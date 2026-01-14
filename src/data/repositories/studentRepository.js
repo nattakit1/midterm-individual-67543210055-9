@@ -1,80 +1,156 @@
-// src/data/repositories/productRepository.js
+// src/data/repositories/studentRepository.js
 const db = require('../database/connection');
 
-class ProductRepository {
-    
-    async findAll(category = null) {
+class StudentRepository {
+    async findAll(major = null, status = null) {
         return new Promise((resolve, reject) => {
-            let sql = 'SELECT * FROM products';
+            let sql = 'SELECT * FROM students';
             let params = [];
-            
-            if (category) {
-                sql += ' WHERE category = ?';
-                params.push(category);
+            let conditions = [];
+
+            if (major) {
+                conditions.push('major = ?');
+                params.push(major);
             }
-            
+
+            if (status) {
+                conditions.push('status = ?');
+                params.push(status);
+            }
+
+            if (conditions.length > 0) {
+                sql += ' WHERE ' + conditions.join(' AND ');
+            }
+
             db.all(sql, params, (err, rows) => {
                 if (err) reject(err);
                 else resolve(rows);
             });
         });
     }
-    
+
     async findById(id) {
         return new Promise((resolve, reject) => {
-            db.get('SELECT * FROM products WHERE id = ?', [id], (err, row) => {
+            db.get('SELECT * FROM students WHERE id = ?', [id], (err, row) => {
                 if (err) reject(err);
                 else resolve(row);
             });
         });
     }
-    
-    async create(productData) {
-        const { name, price, stock, category } = productData;
-        
+
+    async create(studentData) {
+        const { student_code, first_name, last_name, email, major } = studentData;
+
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO products (name, price, stock, category) VALUES (?, ?, ?, ?)';
-            
-            db.run(sql, [name, price, stock || 0, category], function(err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    db.get('SELECT * FROM products WHERE id = ?', [this.lastID], (err, row) => {
-                        if (err) reject(err);
-                        else resolve(row);
-                    });
+            const sql =
+                'INSERT INTO students (student_code, first_name, last_name, email, major) VALUES (?, ?, ?, ?, ?)';
+
+            db.run(
+                sql,
+                [student_code, first_name, last_name, email, major],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [this.lastID],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
                 }
-            });
+            );
         });
     }
-    
-    async update(id, productData) {
-        const { name, price, stock, category } = productData;
-        
+
+    async update(id, studentData) {
+        const { student_code, first_name, last_name, email, major } = studentData;
+
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE products SET name = ?, price = ?, stock = ?, category = ? WHERE id = ?';
-            
-            db.run(sql, [name, price, stock, category, id], function(err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    db.get('SELECT * FROM products WHERE id = ?', [id], (err, row) => {
-                        if (err) reject(err);
-                        else resolve(row);
-                    });
+            const sql = `
+                UPDATE students
+                SET student_code = ?, first_name = ?, last_name = ?, email = ?, major = ?
+                WHERE id = ?
+            `;
+
+            db.run(
+                sql,
+                [student_code, first_name, last_name, email, major, id],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [id],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
                 }
-            });
+            );
         });
     }
-    
+
+    async updateGPA(id, gpa) {
+        return new Promise((resolve, reject) => {
+            db.run(
+                'UPDATE students SET gpa = ? WHERE id = ?',
+                [gpa, id],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [id],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    }
+
+    async updateStatus(id, status) {
+        return new Promise((resolve, reject) => {
+            db.run(
+                'UPDATE students SET status = ? WHERE id = ?',
+                [status, id],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [id],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    }
+
     async delete(id) {
         return new Promise((resolve, reject) => {
-            db.run('DELETE FROM products WHERE id = ?', [id], function(err) {
+            db.run('DELETE FROM students WHERE id = ?', [id], function (err) {
                 if (err) reject(err);
-                else resolve({ deleted: this.changes > 0 });
+                else resolve({ message: 'Student deleted successfully' });
             });
         });
     }
 }
 
-module.exports = new ProductRepository();
+module.exports = new StudentRepository();

@@ -1,55 +1,88 @@
-// src/business/validators/productValidator.js
-class ProductValidator {
-    
-    validateProductData(data) {
-        const { name, price, category } = data;
-        
-        if (!name || !price || !category) {
-            throw new Error('Name, price, and category are required');
+// src/business/validators/studentValidator.js
+class StudentValidator {
+    validateStudent(data) {
+        const { student_code, first_name, last_name, email, major } = data;
+
+        if (!student_code || !first_name || !last_name || !email || !major) {
+            const err = new Error('All fields are required');
+            err.name = 'ValidationError';
+            throw err;
         }
-        
+
         return true;
     }
-    
-    validatePrice(price) {
-        if (price <= 0) {
-            throw new Error('Price must be greater than 0');
+
+    validateStudentCode(code) {
+        const codePattern = /^\d{10}$/;
+
+        if (!codePattern.test(code)) {
+            const err = new Error('Invalid student code format (must be 10 digits)');
+            err.name = 'ValidationError';
+            throw err;
         }
-        
-        if (price > 1000000) {
-            throw new Error('Price cannot exceed 1,000,000');
-        }
-        
+
         return true;
     }
-    
-    validateStock(stock) {
-        if (stock < 0) {
-            throw new Error('Stock cannot be negative');
+
+    validateEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            const err = new Error('Invalid email format');
+            err.name = 'ValidationError';
+            throw err;
         }
-        
+
         return true;
     }
-    
-    validateCategory(category) {
-        const validCategories = ['Electronics', 'Clothing', 'Food', 'Books', 'Toys'];
-        
-        if (!validCategories.includes(category)) {
-            throw new Error(`Invalid category. Must be one of: ${validCategories.join(', ')}`);
+
+    validateMajor(major) {
+        const validMajors = ['CS', 'SE', 'IT', 'CE', 'DS'];
+
+        if (!validMajors.includes(major)) {
+            const err = new Error('Invalid major. Must be one of: CS, SE, IT, CE, DS');
+            err.name = 'ValidationError';
+            throw err;
         }
-        
+
         return true;
     }
-    
+
+    validateGPA(gpa) {
+        if (typeof gpa !== 'number' || gpa < 0 || gpa > 4.0) {
+            const err = new Error('GPA must be between 0.0 and 4.0');
+            err.name = 'ValidationError';
+            throw err;
+        }
+
+        return true;
+    }
+
+    validateStatus(status) {
+        const validStatuses = ['active', 'graduated', 'suspended', 'withdrawn'];
+
+        if (!validStatuses.includes(status)) {
+            const err = new Error(
+                'Invalid status. Must be one of: active, graduated, suspended, withdrawn'
+            );
+            err.name = 'ValidationError';
+            throw err;
+        }
+
+        return true;
+    }
+
     validateId(id) {
         const numId = parseInt(id);
-        
+
         if (isNaN(numId) || numId <= 0) {
-            throw new Error('Invalid product ID');
+            const err = new Error('Invalid student ID');
+            err.name = 'ValidationError';
+            throw err;
         }
-        
+
         return numId;
     }
 }
 
-module.exports = new ProductValidator();
+module.exports = new StudentValidator();

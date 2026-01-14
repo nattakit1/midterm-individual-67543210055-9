@@ -1,5 +1,42 @@
-"# midterm-individual-67543210055-9" 
+# Student Management System - Layered Architecture
 
-# Monolithic UI
+## 📋 Project Information
+- **Student Name:** [ณัฐกิตต์-แก้วคำยศ]
+- **Student ID:** [67543210055-9]
+- **Course:** ENGSE207 Software Architecture
 
-<img width="1683" height="910" alt="image" src="https://github.com/user-attachments/assets/7f71b0dd-6171-427b-88e5-e5030613bf14" />
+## 🏗️ Architecture Style
+Layered Architecture (3-tier)
+
+## 📂 Project Structure
+[อธิบายโครงสร้างโฟลเดอร์]
+
+## 🎯 Refactoring Summary
+
+### ปัญหาของ Monolithic (เดิม):
+- [ระบุปัญหา 3-5 ข้อ]
+
+### วิธีแก้ไขด้วย Layered Architecture:
+- [อธิบายวิธีแก้แต่ละปัญหา]
+
+### ประโยชน์ที่ได้รับ:
+- [ระบุประโยชน์ 3-5 ข้อ]
+
+## 🚀 How to Run
+
+\`\`\`bash
+# 1. Clone repository
+git clone [your-repo-url]
+
+# 2. Install dependencies
+npm install
+
+# 3. Run server
+npm start
+
+# 4. Test API
+# Open browser: http://localhost:3000
+\`\`\`
+
+## 📝 API Endpoints
+[ระบุ API endpoints ทั้งหมด]

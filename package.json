@@ -1,0 +1,26 @@
+{
+  "name": "midterm-individual-67543210055-9",
+  "version": "1.0.0",
+  "description": "- **Student Name:** [ณัฐกิตต์-แก้วคำยศ]\r - **Student ID:** [67543210055-9]\r - **Course:** ENGSE207 Software Architecture",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nattakit1/midterm-individual-67543210055-9.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nattakit1/midterm-individual-67543210055-9/issues"
+  },
+  "homepage": "https://github.com/nattakit1/midterm-individual-67543210055-9#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "sqlite3": "^5.1.7"
+  }
+}
