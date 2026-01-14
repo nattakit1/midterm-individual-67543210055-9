@@ -7,26 +7,76 @@
 
 ## 🏗️ Architecture Style
 Layered Architecture (3-tier)
+- Presentation Layer
+- Business Layer
+- Data Layer
 
 ## 📂 Project Structure
 [อธิบายโครงสร้างโฟลเดอร์]
+midterm-individual-67543210055-9/
+├── server.js
+├── package.json
+├── students.db
+├── public/
+│   └── index.html
+└── src/
+    ├── presentation/
+    │   ├── controllers/
+    │   │   └── studentController.js
+    │   ├── routes/
+    │   │   └── studentRoutes.js
+    │   └── middlewares/
+    │       └── errorHandler.js
+    ├── business/
+    │   ├── services/
+    │   │   └── studentService.js
+    │   └── validators/
+    │       └── studentValidator.js
+    └── data/
+        ├── repositories/
+        │   └── studentRepository.js
+        └── database/
+            └── connection.js
+|- layered-student*
+|- monolithic-student*
 
 ## 🎯 Refactoring Summary
 
 ### ปัญหาของ Monolithic (เดิม):
-- [ระบุปัญหา 3-5 ข้อ]
+- [
+    - โค้ดทั้งหมดอยู่ในไฟล์เดียว ดูแลรักษายาก!
+
+- Business logic ปะปนกับ routing และ database
+
+- แก้ไขส่วนหนึ่งกระทบทั้งระบบ
+
+- ทดสอบแยกส่วนไม่ได้
+
+- ขยายระบบยาก]
 
 ### วิธีแก้ไขด้วย Layered Architecture:
-- [อธิบายวิธีแก้แต่ละปัญหา]
+- [แยก Controller ออกจาก Service และ Repository
+
+Business logic อยู่ใน Service เท่านั้น
+
+Database access ถูกจัดการผ่าน Repository
+
+Validation แยกเป็น Validator โดยเฉพาะ
+
+Error handling รวมศูนย์ที่ Middleware]
 
 ### ประโยชน์ที่ได้รับ:
-- [ระบุประโยชน์ 3-5 ข้อ]
+- [รับความรู้ในการแก้ไขโค้ด
+
+ได้เรียนรู้เกี่ยวกับการแก้ไขโค้ด
+
+เรียนรู้เกี่ยวกับการแยกโค้ดโครงสร้าง]
 
 ## 🚀 How to Run
 
 \`\`\`bash
 # 1. Clone repository
-git clone [your-repo-url]
+git clone [https://github.com/nattakit1/midterm-individual-67543210055-9]
 
 # 2. Install dependencies
 npm install
@@ -39,4 +89,13 @@ npm start
 \`\`\`
 
 ## 📝 API Endpoints
-[ระบุ API endpoints ทั้งหมด]
+[| Method | Endpoint                 | Description           |
+| ------ | ------------------------ | --------------------- |
+| GET    | /api/students            | Get all students      |
+| GET    | /api/students/:id        | Get student by ID     |
+| POST   | /api/students            | Create new student    |
+| PUT    | /api/students/:id        | Update student        |
+| PATCH  | /api/students/:id/gpa    | Update student GPA    |
+| PATCH  | /api/students/:id/status | Update student status |
+| DELETE | /api/students/:id        | Delete student        |
+]

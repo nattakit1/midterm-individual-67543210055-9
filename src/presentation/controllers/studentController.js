@@ -3,24 +3,22 @@ const studentService = require('../../business/services/studentService');
 
 class StudentController {
 
-    // GET /students?major=&status=
-    async getAllStudents(req, res, next) {
-        try {
-            const { major, status } = req.query;
+// GET /students?major=&status=
+async getAllStudents(req, res, next) {
+    try {
+        const { major, status } = req.query;
 
-            const students = await studentService.getAllStudents({
-                major,
-                status
-            });
+        const result = await studentService.getAllStudents({
+            major,
+            status
+        });
 
-            res.status(200).json({
-                success: true,
-                data: students
-            });
-        } catch (error) {
-            next(error);
-        }
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
     }
+}
+
 
     // GET /students/:id
     async getStudentById(req, res, next) {
@@ -31,7 +29,7 @@ class StudentController {
 
             res.status(200).json({
                 success: true,
-                data: student
+                data: students
             });
         } catch (error) {
             next(error);
