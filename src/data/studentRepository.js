@@ -1,87 +1,156 @@
-const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
+// src/data/repositories/studentRepository.js
+const db = require('../database/connection');
 
-const dbPath = path.join(__dirname, '../../students.db');
-const db = new sqlite3.Database(dbPath);
+class StudentRepository {
+    async findAll(major = null, status = null) {
+        return new Promise((resolve, reject) => {
+            let sql = 'SELECT * FROM students';
+            let params = [];
+            let conditions = [];
 
-// สร้าง table
-db.run(`
-CREATE TABLE IF NOT EXISTS students (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  student_code TEXT UNIQUE,
-  first_name TEXT,
-  last_name TEXT,
-  email TEXT,
-  major TEXT,
-  gpa REAL,
-  status TEXT DEFAULT 'active'
-)
-`);
+            if (major) {
+                conditions.push('major = ?');
+                params.push(major);
+            }
 
-const findAll = () => {
-  return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM students', [], (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
-};
+            if (status) {
+                conditions.push('status = ?');
+                params.push(status);
+            }
 
-const insert = (s) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      INSERT INTO students
-      (student_code, first_name, last_name, email, major)
-      VALUES (?, ?, ?, ?, ?)
-    `;
-    db.run(
-      sql,
-      [s.student_code, s.first_name, s.last_name, s.email, s.major],
-      function (err) {
-        if (err) reject(err);
-        else resolve({ id: this.lastID, ...s });
-      }
-    );
-  });
-};
+            if (conditions.length > 0) {
+                sql += ' WHERE ' + conditions.join(' AND ');
+            }
 
-const updateGPA = (id, gpa) => {
-  return new Promise((resolve, reject) => {
-    const sql = `UPDATE students SET gpa = ? WHERE id = ?`;
-    db.run(sql, [gpa, id], function (err) {
-      if (err) reject(err);
-      else resolve({ id, gpa });
-    });
-  });
-};
+            db.all(sql, params, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+    }
 
-const updateStatus = (id, status) => {
-  return new Promise((resolve, reject) => {
-    const sql = `UPDATE students SET status = ? WHERE id = ?`;
-    db.run(sql, [status, id], function (err) {
-      if (err) reject(err);
-      else resolve({ id, status });
-    });
-  });
-};
+    async findById(id) {
+        return new Promise((resolve, reject) => {
+            db.get('SELECT * FROM students WHERE id = ?', [id], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+    }
 
-const remove = (id) => {
-  return new Promise((resolve, reject) => {
-    const sql = `DELETE FROM students WHERE id = ?`;
-    db.run(sql, [id], function (err) {
-      if (err) reject(err);
-      else resolve({ deleted: this.changes });
-    });
-  });
-};
+    async create(studentData) {
+        const { student_code, first_name, last_name, email, major } = studentData;
 
+        return new Promise((resolve, reject) => {
+            const sql =
+                'INSERT INTO students (student_code, first_name, last_name, email, major) VALUES (?, ?, ?, ?, ?)';
 
+            db.run(
+                sql,
+                [student_code, first_name, last_name, email, major],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [this.lastID],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    }
 
-// ✅ EXPORT ให้ครบ
-module.exports = {
-  findAll,
-  insert,
-  updateGPA,
-  updateStatus,
-  remove
-};
+    async update(id, studentData) {
+        const { student_code, first_name, last_name, email, major } = studentData;
+
+        return new Promise((resolve, reject) => {
+            const sql = `
+                UPDATE students
+                SET student_code = ?, first_name = ?, last_name = ?, email = ?, major = ?
+                WHERE id = ?
+            `;
+
+            db.run(
+                sql,
+                [student_code, first_name, last_name, email, major, id],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [id],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    }
+
+    async updateGPA(id, gpa) {
+        return new Promise((resolve, reject) => {
+            db.run(
+                'UPDATE students SET gpa = ? WHERE id = ?',
+                [gpa, id],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [id],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    }
+
+    async updateStatus(id, status) {
+        return new Promise((resolve, reject) => {
+            db.run(
+                'UPDATE students SET status = ? WHERE id = ?',
+                [status, id],
+                function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.get(
+                            'SELECT * FROM students WHERE id = ?',
+                            [id],
+                            (err, row) => {
+                                if (err) reject(err);
+                                else resolve(row);
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    }
+
+    async delete(id) {
+        return new Promise((resolve, reject) => {
+            db.run('DELETE FROM students WHERE id = ?', [id], function (err) {
+                if (err) reject(err);
+                else resolve({ message: 'Student deleted successfully' });
+            });
+        });
+    }
+}
+
+module.exports = new StudentRepository();

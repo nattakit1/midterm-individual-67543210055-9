@@ -1,97 +1,126 @@
-// src/business/services/productService.js
-const productRepository = require('../../data/repositories/productRepository');
-const productValidator = require('../validators/productValidator');
+// src/business/services/studentService.js
+const studentRepository = require('../../data/repositories/studentRepository');
+const studentValidator = require('../validators/studentValidator');
 
-class ProductService {
-    
-    async getAllProducts(category = null) {
-        // Validate filter
-        if (category) {
-            productValidator.validateCategory(category);
-        }
-        
-        // Get data
-        const products = await productRepository.findAll(category);
-        
-        // Business logic: calculate total value
-        const totalValue = products.reduce((sum, p) => {
-            return sum + (p.price * p.stock);
-        }, 0);
-        
-        // Return formatted data
+class StudentService {
+    async getAllStudents({ major = null, status = null } = {}) {
+        if (major) studentValidator.validateMajor(major);
+        if (status) studentValidator.validateStatus(status);
+
+        const students = await studentRepository.findAll(major, status);
+
+        const total = students.length;
+        const active = students.filter(s => s.status === 'active').length;
+        const graduated = students.filter(s => s.status === 'graduated').length;
+        const suspended = students.filter(s => s.status === 'suspended').length;
+        const avgGPA =
+            total === 0
+                ? 0
+                : (
+                      students.reduce((sum, s) => sum + (s.gpa || 0), 0) /
+                      total
+                  ).toFixed(2);
+
         return {
-            products: products,
+            students,
             statistics: {
-                count: products.length,
-                totalValue: parseFloat(totalValue.toFixed(2))
+                total,
+                active,
+                graduated,
+                suspended,
+                avgGPA: Number(avgGPA)
             }
         };
     }
-    
-    async getProductById(id) {
-        const validId = productValidator.validateId(id);
-        const product = await productRepository.findById(validId);
-        
-        if (!product) {
-            throw new Error('Product not found');
+
+    async getStudentById(id) {
+        studentValidator.validateId(id);
+
+        const student = await studentRepository.findById(id);
+        if (!student) {
+            const err = new Error('Student not found');
+            err.name = 'NotFoundError';
+            throw err;
         }
-        
-        return product;
+
+        return student;
     }
-    
-    async createProduct(productData) {
-        // Validate
-        productValidator.validateProductData(productData);
-        productValidator.validatePrice(productData.price);
-        productValidator.validateCategory(productData.category);
-        
-        if (productData.stock !== undefined) {
-            productValidator.validateStock(productData.stock);
-        }
-        
-        // Create
-        const product = await productRepository.create(productData);
-        return product;
+
+    async createStudent(studentData) {
+        studentValidator.validateStudent(studentData);
+        studentValidator.validateStudentCode(studentData.student_code);
+        studentValidator.validateEmail(studentData.email);
+        studentValidator.validateMajor(studentData.major);
+
+        return await studentRepository.create(studentData);
     }
-    
-    async updateProduct(id, productData) {
-        const validId = productValidator.validateId(id);
-        
-        // Check exists
-        const existingProduct = await productRepository.findById(validId);
-        if (!existingProduct) {
-            throw new Error('Product not found');
+
+    async updateStudent(id, studentData) {
+        studentValidator.validateId(id);
+        studentValidator.validateStudent(studentData);
+
+        const student = await studentRepository.findById(id);
+        if (!student) {
+            const err = new Error('Student not found');
+            err.name = 'NotFoundError';
+            throw err;
         }
-        
-        // Validate
-        productValidator.validateProductData(productData);
-        productValidator.validatePrice(productData.price);
-        productValidator.validateCategory(productData.category);
-        productValidator.validateStock(productData.stock);
-        
-        // Update
-        const updatedProduct = await productRepository.update(validId, productData);
-        return updatedProduct;
+
+        return await studentRepository.update(id, studentData);
     }
-    
-    async deleteProduct(id) {
-        const validId = productValidator.validateId(id);
-        
-        // Check exists
-        const product = await productRepository.findById(validId);
-        if (!product) {
-            throw new Error('Product not found');
+
+    async updateGPA(id, gpa) {
+        studentValidator.validateId(id);
+        studentValidator.validateGPA(gpa);
+
+        const student = await studentRepository.findById(id);
+        if (!student) {
+            const err = new Error('Student not found');
+            err.name = 'NotFoundError';
+            throw err;
         }
-        
-        // Business rule: cannot delete if stock > 0
-        if (product.stock > 0) {
-            throw new Error('Cannot delete product with stock > 0. Please reduce stock first.');
+
+        return await studentRepository.updateGPA(id, gpa);
+    }
+
+    async updateStatus(id, status) {
+        studentValidator.validateId(id);
+        studentValidator.validateStatus(status);
+
+        const student = await studentRepository.findById(id);
+        if (!student) {
+            const err = new Error('Student not found');
+            err.name = 'NotFoundError';
+            throw err;
         }
-        
-        // Delete
-        await productRepository.delete(validId);
-        return { message: 'Product deleted successfully' };
+
+        if (student.status === 'withdrawn') {
+            const err = new Error('Cannot change withdrawn student status');
+            err.name = 'ConflictError';
+            throw err;
+        }
+
+        return await studentRepository.updateStatus(id, status);
+    }
+
+    async deleteStudent(id) {
+        studentValidator.validateId(id);
+
+        const student = await studentRepository.findById(id);
+        if (!student) {
+            const err = new Error('Student not found');
+            err.name = 'NotFoundError';
+            throw err;
+        }
+
+        if (student.status === 'active') {
+            const err = new Error('Cannot delete active student');
+            err.name = 'ConflictError';
+            throw err;
+        }
+
+        await studentRepository.delete(id);
     }
 }
 
-module.exports = new ProductService();
+module.exports = new StudentService();

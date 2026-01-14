@@ -2,32 +2,29 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.join(__dirname, '../../../products.db');
+const dbPath = path.join(__dirname, '../../../students.db');
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('❌ Database connection error:', err);
+        console.error('Database connection error:', err);
     } else {
-        console.log('✅ Connected to SQLite database');
+        console.log('Connected to SQLite database');
         initializeDatabase();
     }
 });
 
 function initializeDatabase() {
-    db.run(`CREATE TABLE IF NOT EXISTS products (
+    db.run(`CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        price REAL NOT NULL,
-        stock INTEGER DEFAULT 0,
-        category TEXT NOT NULL,
+        student_code TEXT UNIQUE NOT NULL,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        major TEXT NOT NULL,
+        gpa REAL DEFAULT 0.0,
+        status TEXT DEFAULT 'active',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`, (err) => {
-        if (err) {
-            console.error('❌ Table creation error:', err);
-        } else {
-            console.log('✅ Products table ready');
-        }
-    });
+    )`);
 }
 
 module.exports = db;
