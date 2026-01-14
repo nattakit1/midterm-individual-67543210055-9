@@ -45,8 +45,20 @@ const insert = (s) => {
   });
 };
 
+const updateGPA = (id, gpa) => {
+  return new Promise((resolve, reject) => {
+    const sql = `UPDATE students SET gpa = ? WHERE id = ?`;
+    db.run(sql, [gpa, id], function (err) {
+      if (err) reject(err);
+      else resolve({ id, gpa });
+    });
+  });
+};
+
+
 // ✅ EXPORT ให้ครบ
 module.exports = {
   findAll,
-  insert
+  insert,
+  updateGPA
 };

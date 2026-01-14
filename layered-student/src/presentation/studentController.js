@@ -35,4 +35,22 @@ router.post('/', async (req, res) => {
   }
 });
 
+// ✅ UPDATE GPA
+router.patch('/:id/gpa', async (req, res) => {
+  const { id } = req.params;
+  const { gpa } = req.body;
+
+  if (gpa === undefined) {
+    return res.status(400).json({ error: 'Missing GPA' });
+  }
+
+  try {
+    await studentRepo.updateGPA(id, gpa);
+    res.json({ message: 'GPA updated', id, gpa });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
