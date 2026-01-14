@@ -52,5 +52,41 @@ router.patch('/:id/gpa', async (req, res) => {
   }
 });
 
+// ✅ CHANGE STATUS
+router.patch('/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ error: 'Missing status' });
+  }
+
+  try {
+    await studentRepo.updateStatus(id, status);
+    res.json({ message: 'Status updated', id, status });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ DELETE STUDENT
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await studentRepo.remove(id);
+
+    if (result.deleted === 0) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    res.json({ message: 'Student deleted', id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 
 module.exports = router;

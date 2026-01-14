@@ -55,10 +55,33 @@ const updateGPA = (id, gpa) => {
   });
 };
 
+const updateStatus = (id, status) => {
+  return new Promise((resolve, reject) => {
+    const sql = `UPDATE students SET status = ? WHERE id = ?`;
+    db.run(sql, [status, id], function (err) {
+      if (err) reject(err);
+      else resolve({ id, status });
+    });
+  });
+};
+
+const remove = (id) => {
+  return new Promise((resolve, reject) => {
+    const sql = `DELETE FROM students WHERE id = ?`;
+    db.run(sql, [id], function (err) {
+      if (err) reject(err);
+      else resolve({ deleted: this.changes });
+    });
+  });
+};
+
+
 
 // ✅ EXPORT ให้ครบ
 module.exports = {
   findAll,
   insert,
-  updateGPA
+  updateGPA,
+  updateStatus,
+  remove
 };
