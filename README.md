@@ -66,13 +66,18 @@ npm start
 \`\`\`
 
 ## 📝 API Endpoints
-[| Method | Endpoint                 | Description           |
-| ------ | ------------------------ | --------------------- |
-| GET    | /api/students            | Get all students      |
-| GET    | /api/students/:id        | Get student by ID     |
-| POST   | /api/students            | Create new student    |
-| PUT    | /api/students/:id        | Update student        |
-| PATCH  | /api/students/:id/gpa    | Update student GPA    |
-| PATCH  | /api/students/:id/status | Update student status |
-| DELETE | /api/students/:id        | Delete student        |
-]
+
+<img width="470" height="238" alt="image" src="https://github.com/user-attachments/assets/a558ee49-d4ae-4983-9fa4-80edced98e34" />
+
+<img width="1579" height="690" alt="image" src="https://github.com/user-attachments/assets/045031b3-1a09-47e4-a9e4-b80a7b49b095" />
+
+<img width="753" height="611" alt="image" src="https://github.com/user-attachments/assets/68a0bfdf-2763-48b4-9740-0a416d3c58bf" />
+
+<img width="834" height="618" alt="image" src="https://github.com/user-attachments/assets/c3bb326d-0ac9-4b3c-893e-95db3e0520e8" />
+
+<img width="1403" height="684" alt="image" src="https://github.com/user-attachments/assets/2681dab4-5bef-4c89-8278-25e9babbc556" />
+
+
+
+
+
