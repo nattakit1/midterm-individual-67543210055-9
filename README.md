@@ -13,32 +13,9 @@ Layered Architecture (3-tier)
 
 ## 📂 Project Structure
 [อธิบายโครงสร้างโฟลเดอร์]
-midterm-individual-67543210055-9/
-├── server.js
-├── package.json
-├── students.db
-├── public/
-│   └── index.html
-└── src/
-    ├── presentation/
-    │   ├── controllers/
-    │   │   └── studentController.js
-    │   ├── routes/
-    │   │   └── studentRoutes.js
-    │   └── middlewares/
-    │       └── errorHandler.js
-    ├── business/
-    │   ├── services/
-    │   │   └── studentService.js
-    │   └── validators/
-    │       └── studentValidator.js
-    └── data/
-        ├── repositories/
-        │   └── studentRepository.js
-        └── database/
-            └── connection.js
-|- layered-student*
-|- monolithic-student*
+
+<img width="295" height="580" alt="image" src="https://github.com/user-attachments/assets/f02dbcdd-e284-48d9-a6df-2e4c317ab6ee" />
+
 
 ## 🎯 Refactoring Summary
 
@@ -89,13 +66,25 @@ npm start
 \`\`\`
 
 ## 📝 API Endpoints
-[| Method | Endpoint                 | Description           |
-| ------ | ------------------------ | --------------------- |
-| GET    | /api/students            | Get all students      |
-| GET    | /api/students/:id        | Get student by ID     |
-| POST   | /api/students            | Create new student    |
-| PUT    | /api/students/:id        | Update student        |
-| PATCH  | /api/students/:id/gpa    | Update student GPA    |
-| PATCH  | /api/students/:id/status | Update student status |
-| DELETE | /api/students/:id        | Delete student        |
-]
+
+<img width="470" height="238" alt="image" src="https://github.com/user-attachments/assets/a558ee49-d4ae-4983-9fa4-80edced98e34" />
+
+<img width="1579" height="690" alt="image" src="https://github.com/user-attachments/assets/045031b3-1a09-47e4-a9e4-b80a7b49b095" />
+
+<img width="753" height="611" alt="image" src="https://github.com/user-attachments/assets/68a0bfdf-2763-48b4-9740-0a416d3c58bf" />
+
+<img width="834" height="618" alt="image" src="https://github.com/user-attachments/assets/c3bb326d-0ac9-4b3c-893e-95db3e0520e8" />
+
+<img width="1403" height="684" alt="image" src="https://github.com/user-attachments/assets/2681dab4-5bef-4c89-8278-25e9babbc556" />
+
+# updateGPA
+
+<img width="853" height="650" alt="image" src="https://github.com/user-attachments/assets/2406c223-ef1f-4309-9fc1-35d1b64b4481" />
+
+# updateStatus
+
+<img width="828" height="619" alt="image" src="https://github.com/user-attachments/assets/c33a08e6-16f5-4d32-9a0f-f3bcbfc7e31e" />
+
+<img width="1525" height="665" alt="image" src="https://github.com/user-attachments/assets/ac7cda98-5c9f-45d9-8c8b-50e877e61485" />
+
+
